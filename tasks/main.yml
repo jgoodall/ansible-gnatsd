@@ -1,0 +1,25 @@
+---
+
+- name: Download gnatsd
+  get_url: url={{ gnatsd_download_url }} dest=/tmp/gnatsd.tgz
+
+- name: Move gnatsd binary into place
+  shell: tar -vxzf /tmp/gnatsd.tgz -O ./gnatsd > {{ gnatsd_install_dir }}/gnatsd
+
+- name: Set gnatsd to executable
+  file: path={{ gnatsd_install_dir }}/gnatsd mode=0755
+
+- name: Copy config file
+  template: src=gnatsd.conf dest={{ gnatsd_conf_file }}
+
+- name: Remove gnatsd tarball
+  file: path=/tmp/gnatsd.tgz state=absent
+
+- name: Install supervisord
+  apt: name=supervisor update_cache=yes state=present
+
+- name: Copy supervisor conf file
+  template: src=gnatsd-supervisor.conf dest=/etc/supervisor/conf.d/gnatsd.conf
+
+- name: Reload supervisor
+  shell: /usr/bin/supervisorctl reload
