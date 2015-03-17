@@ -3,6 +3,9 @@
 - name: Download gnatsd
   get_url: url={{ gnatsd_download_url }} dest=/tmp/gnatsd.tgz
 
+- name: Stop existing instance
+  shell: /usr/bin/supervisorctl stop gnatsd
+
 - name: Move gnatsd binary into place
   shell: tar -vxzf /tmp/gnatsd.tgz -O ./gnatsd > {{ gnatsd_install_dir }}/gnatsd
 
