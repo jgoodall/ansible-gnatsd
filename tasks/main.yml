@@ -7,7 +7,7 @@
   shell: /usr/bin/supervisorctl stop gnatsd
 
 - name: Move gnatsd binary into place
-  shell: tar -vxzf {{ gnats_tarball_path }} -O ./gnatsd > {{ gnatsd_install_dir }}/gnatsd  creates={{ gnats_tarball_path }}
+  shell: tar -vxzf {{ gnats_tarball_path }} -O ./gnatsd > {{ gnatsd_install_dir }}/gnatsd
 
 - name: Set gnatsd to executable
   file: path={{ gnatsd_install_dir }}/gnatsd mode=0755
