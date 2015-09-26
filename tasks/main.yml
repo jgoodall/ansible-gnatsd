@@ -24,3 +24,6 @@
 
 - name: Start instance
   supervisorctl: name=gnatsd state=started
+
+- name: Reload supervisor
+  shell: /usr/bin/supervisorctl reload 
