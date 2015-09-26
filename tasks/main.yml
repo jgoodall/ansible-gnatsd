@@ -1,13 +1,17 @@
 ---
 
+
+- name: Install supervisord
+  apt: name=supervisor update_cache=yes state=present
+
 - name: Download gnatsd
   get_url: url={{ gnatsd_download_url }} dest={{ gnats_tarball_path }}
 
 - name: Stop existing instance
-  shell: /usr/bin/supervisorctl stop gnatsd
+  supervisorctl: name=gnatsd state=stopped
 
 - name: Move gnatsd binary into place
-  shell: tar -vxzf {{ gnats_tarball_path }} -O ./gnatsd > {{ gnatsd_install_dir }}/gnatsd
+  shell: tar -vxzf {{ gnats_tarball_path }} -O gnatsd > {{ gnatsd_install_dir }}/gnatsd
 
 - name: Set gnatsd to executable
   file: path={{ gnatsd_install_dir }}/gnatsd mode=0755
@@ -15,11 +19,8 @@
 - name: Copy config file
   template: src=gnatsd.conf dest={{ gnatsd_conf_file }}
 
-- name: Install supervisord
-  apt: name=supervisor update_cache=yes state=present
-
 - name: Copy supervisor conf file
   template: src=gnatsd-supervisor.conf dest=/etc/supervisor/conf.d/gnatsd.conf
 
-- name: Reload supervisor
-  shell: /usr/bin/supervisorctl reload
+- name: Start instance
+  supervisorctl: name=gnatsd state=started

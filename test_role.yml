@@ -4,11 +4,12 @@
   hosts: all
   sudo: yes
   vars:
-    gnatsd_version: 0.5.6
-    gnatsd_download_url: https://github.com/apcera/gnatsd/releases/download/v{{ gnatsd_version }}/gnatsd-v{{ gnatsd_version }}-linux-amd64.tar.gz
+    gnatsd_version: 0.6.8
+    gnatsd_download_url: https://github.com/nats-io/gnatsd/releases/download/v{{ gnatsd_version }}/gnatsd-v{{ gnatsd_version }}-linux-amd64.tar.gz
     gnatsd_install_dir: /usr/local/sbin
-    gnatsd_port: 4242
+    gnatsd_port: 4222
     gnatsd_conf_file: /etc/gnatsd.conf
+    gnats_tarball_path: /usr/local/src/gnatsd-{{ gnatsd_version }}.tgz
 
   tasks:
     - include: 'tasks/main.yml'
